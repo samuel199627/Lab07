@@ -26,6 +26,8 @@ public class Nerc {
 	public void setValue(String value) {
 		this.value = value;
 	}
+	
+	//creiamo uguaglianza sull'id come e' giusto cosi'
 
 	@Override
 	public int hashCode() {
@@ -48,6 +50,8 @@ public class Nerc {
 			return false;
 		return true;
 	}
+	
+	//il toString stampa il valore, cioe' il nome del NERC che e' quello che facciamo comparire nel menu a tendina
 
 	@Override
 	public String toString() {

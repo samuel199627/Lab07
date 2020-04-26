@@ -11,6 +11,8 @@ import it.polito.tdp.poweroutages.model.Nerc;
 
 public class PowerOutageDAO {
 	
+	//imprortiamo le entita' regionali destinate al controllo dell'energia elettrica che vanno a costituire 
+	//il menu a tendina nella finestra
 	public List<Nerc> getNercList() {
 
 		String sql = "SELECT id, value FROM nerc";
