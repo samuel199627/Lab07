@@ -15,5 +15,10 @@ public class Model {
 	public List<Nerc> getNercList() {
 		return podao.getNercList();
 	}
+	
+	public List<PowerOutage> getPowerOutageList(Nerc n) {
+		return podao.getPowerOutageList(n);
+	}
+	
 
 }
