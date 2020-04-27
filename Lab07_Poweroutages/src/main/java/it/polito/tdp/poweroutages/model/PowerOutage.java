@@ -8,15 +8,15 @@ public class PowerOutage {
 	Nerc nerc;
 	int customersAffected;
 	LocalDateTime dateBegan;
-	LocalDateTime dateFushed;
+	LocalDateTime dateFinished;
 	
-	public PowerOutage(int id, Nerc nerc, int customersAffected, LocalDateTime dateBegan, LocalDateTime dateFushed) {
+	public PowerOutage(int id, Nerc nerc, int customersAffected, LocalDateTime dateBegan, LocalDateTime dateFinished) {
 		super();
 		this.id = id;
 		this.nerc = nerc;
 		this.customersAffected = customersAffected;
 		this.dateBegan = dateBegan;
-		this.dateFushed = dateFushed;
+		this.dateFinished = dateFinished;
 	}
 	
 	//HashCode ed equals sull'id
@@ -69,10 +69,10 @@ public class PowerOutage {
 		this.dateBegan = dateBegan;
 	}
 	public LocalDateTime getDateFushed() {
-		return dateFushed;
+		return dateFinished;
 	}
-	public void setDateFushed(LocalDateTime dateFushed) {
-		this.dateFushed = dateFushed;
+	public void setDateFushed(LocalDateTime dateFinished) {
+		this.dateFinished = dateFinished;
 	}
 	
 	
