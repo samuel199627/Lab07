@@ -8,6 +8,8 @@ public class TestModel {
 		//System.out.println(model.getNercList());
 		
 		model.getPowerOutageList(new Nerc(3, null));
+		
+		//System.out.print(""+((float) 2280)/((float) 3600));
 
 	}
 

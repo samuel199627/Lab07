@@ -1,6 +1,7 @@
 package it.polito.tdp.poweroutages;
 
 import java.net.URL;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -14,6 +15,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+
+//COMMENTI LABORATORIO 7
+/*
+ 	per i calcoli di ore e anni nella differenza tra due date facciamo la differenza giusta quindi riferendoci proprio allo ore
+ 	e ci salviamo le differenze questione  in dei float che ci danno i valori precisi.
+ 	Queste differnze precise le ho costruite a partire dai secondi di differenza tra le due date che e' la nostra unita' di tempo
+ 	in base a come sono stati salvati i dati nella base dati.
+ */
 
 public class FXMLController {
 	
