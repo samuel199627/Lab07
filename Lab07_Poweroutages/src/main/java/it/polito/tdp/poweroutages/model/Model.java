@@ -21,6 +21,8 @@ public class Model {
 	int maxPersoneColpite;
 	float oreAttuali;
 	Duration d;
+	//int personeColpiteSoluzione;
+	float oreTotaliSoluzione;
 	
 	//serve per effettuare poche stampe della soluzione per controllare se funziona
 	int conta=0;
@@ -33,19 +35,27 @@ public class Model {
 	/*
 	 	prepariamo le variabili per la procedura ricorsiva
 	 */
-	public List<PowerOutage> trovaSequenzaPeggiore(Nerc n, int maxHours, int maxYears){
-		List<PowerOutage> parziale = new ArrayList<PowerOutage>();
+	public Soluzione trovaSequenzaPeggiore(Nerc n, int maxHours, int maxYears){
+		//parziale e' meglio solo averla locale nella soluzione
+		//List<PowerOutage> parziale = new ArrayList<PowerOutage>();
 		soluzione = new ArrayList<PowerOutage>();
 		this.maxHours=maxHours;
 		this.maxYears=maxYears;
 		listaTotale = new ArrayList<PowerOutage>(); 
 		listaTotale=this.getPowerOutageList(n);
-		System.out.println("blackout totali: "+listaTotale.size());
+		//System.out.println("blackout totali: "+listaTotale.size());
 		maxPersoneColpite=0;
+		oreTotaliSoluzione=0;
+		//ricorsione(0, parziale,0,0,false);
+		ricorsione(0, new ArrayList<PowerOutage>(),0,0,false);
+		/*
+		System.out.println("personeColpite: "+maxPersoneColpite);
+		System.out.println("oreTotali: "+oreTotaliSoluzione);
+		*/
 		
-		ricorsione(0, parziale,0,0,false);
+		Soluzione soluzioneCompleta= new Soluzione(soluzione, maxPersoneColpite, oreTotaliSoluzione);
 		
-		return null;
+		return soluzioneCompleta;
 	}
 	
 	/*
@@ -75,18 +85,32 @@ public class Model {
 		if(esci == true || livello==listaTotale.size()) {
 			if(parziale.size()>0) {
 				conta++;
-				if(conta<10) {
-					System.out.println("\nSOLUZIONE "+conta+" con "+parziale.size()+" blackout: \n");
+				if(conta>0) {
+				//if(conta>20&&conta<100) {
+					//System.out.println("\nSOLUZIONE "+conta+" con "+parziale.size()+" blackout: \n");
+					
+					
+					//System.out.println("personeColpiteParziale: "+personeColpiteParziale);
+					//System.out.println("oreParzialiTot: "+oreParzialiTot);
+					
+					/*
+					System.out.println("esci: "+esci);
+					System.out.println("livello: "+livello);
 					for(PowerOutage p:parziale) {
-						System.out.println("personeColpiteParziale: "+personeColpiteParziale);
-						System.out.println("oreParzialiTot: "+oreParzialiTot);
-						System.out.println("esci: "+esci);
-						System.out.println("livello: "+livello);
+						
 						System.out.println("id: "+p.getId());
 						System.out.println("datainizio: "+p.getDateBegan());
 						System.out.println("datafine: "+p.getDateFushed()+"\n");
 					}
+					*/
 				}
+				if(personeColpiteParziale>maxPersoneColpite) {
+					maxPersoneColpite=personeColpiteParziale;
+					soluzione=new ArrayList<>(parziale);
+					oreTotaliSoluzione=oreParzialiTot;
+					//System.out.println("oreParzialiTot: "+oreParzialiTot);
+				}
+				//System.out.println("maxPersoneColpite: "+maxPersoneColpite);
 			}
 			return;
 		}
@@ -98,6 +122,9 @@ public class Model {
 				esci= true;
 				livello++;
 				ricorsione(livello,parziale, oreParzialiTot, personeColpiteParziale,esci);
+				//rimetto a posto le variabili che avevo modificato
+				livello--;
+				//parziale.remove(parziale.size()-1);
 				return;
 			}
 		}
@@ -109,6 +136,7 @@ public class Model {
 		//non aggiungo
 		livello++;
 		ricorsione(livello, parziale, oreParzialiTot, personeColpiteParziale,esci);
+		//rimetto a posto le variabili che avevo modificato
 		livello--;
 		
 		//aggiungo
@@ -117,25 +145,52 @@ public class Model {
 		oreAttuali=d.getSeconds()/((float) 3600);
 		oreParzialiTot=oreParzialiTot+oreAttuali;
 		if(oreParzialiTot >= (float) maxHours) {
-			//non possiamo aggiungere perche' sforiamo le ore
+			//non possiamo aggiungere perche' sforiamo le ore e quindi siccome il caso di non aggiunta lo abbiamo gia' esplorato
+			//sopra, non mi pare proprio il caso di esplorare di fatto la stessa strada
 			oreParzialiTot=oreParzialiTot-oreAttuali;
+			/*
 			livello++;
 			ricorsione(livello, parziale, oreParzialiTot, personeColpiteParziale,esci);
+			//rimetto a posto le variabili che avevo modificato
+			livello--;
 			return;
+			*/
+			
 		}
 		else {
 			//se non sforiamo aggiungiamo alla soluzione parziale
 			//gli passo direttamente l'oggetto perche' tanto non devo fare nessuna modifica
 			parziale.add(listaTotale.get(livello));
-			livello++;
+			//System.out.println("\ndimensione prima: "+parziale.size());
+			/*
+			for(PowerOutage p:parziale) {
+				
+				System.out.println("id: "+p.getId());
+				System.out.println("datainizio: "+p.getDateBegan());
+				System.out.println("datafine: "+p.getDateFushed()+"\n");
+			}
+			*/
 			personeColpiteParziale=personeColpiteParziale+listaTotale.get(livello).getCustomersAffected();
+			livello++;
 			ricorsione(livello, parziale, oreParzialiTot, personeColpiteParziale,esci);
+			//rimetto a posto le variabili che avevo modificato
+			livello--;
+			
+			//System.out.println("\ndimensione dopo: "+parziale.size());
+			/*
+			for(PowerOutage p:parziale) {
+				
+				System.out.println("id: "+p.getId());
+				System.out.println("datainizio: "+p.getDateBegan());
+				System.out.println("datafine: "+p.getDateFushed()+"\n");
+			}
+			*/
+			parziale.remove(parziale.size()-1);
+			personeColpiteParziale=personeColpiteParziale-listaTotale.get(livello).getCustomersAffected();
+			oreParzialiTot=oreParzialiTot-oreAttuali;
+			return;
 		}
-		
-		
-		
-		
-		
+			
 	}
 	
 	public List<Nerc> getNercList() {

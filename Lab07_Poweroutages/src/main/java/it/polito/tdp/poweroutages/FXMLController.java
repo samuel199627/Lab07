@@ -1,12 +1,14 @@
 package it.polito.tdp.poweroutages;
 
 import java.net.URL;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.poweroutages.model.Model;
 import it.polito.tdp.poweroutages.model.Nerc;
+import it.polito.tdp.poweroutages.model.PowerOutage;
+import it.polito.tdp.poweroutages.model.Soluzione;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,6 +57,15 @@ public class FXMLController {
     @FXML
     void worstCase(ActionEvent event) {
 
+    	txtRis.clear();
+    	List<PowerOutage> ritorno=new ArrayList<>();
+    	Soluzione soluzione= model.trovaSequenzaPeggiore(choiceNERC.getValue(), Integer.parseInt(txtHours.getText()), Integer.parseInt(txtYears.getText()));
+    	ritorno=soluzione.getLista();
+    	txtRis.appendText("Persone colpite totali: "+soluzione.getPersoneColpite()+"\n");
+    	txtRis.appendText("Ore di blackout totali: "+soluzione.getOreTotali()+"\n");
+    	for(PowerOutage p:ritorno) {
+    		txtRis.appendText("id "+p.getId()+"\tdata inizio "+p.getDateBegan()+"\tdata fine "+p.getDateFushed()+"\tpersone colpite "+p.getCustomersAffected()+"\n");
+    	}
     }
 
     @FXML
