@@ -24,6 +24,9 @@ import javafx.scene.image.ImageView;
  	e ci salviamo le differenze questione  in dei float che ci danno i valori precisi.
  	Queste differnze precise le ho costruite a partire dai secondi di differenza tra le due date che e' la nostra unita' di tempo
  	in base a come sono stati salvati i dati nella base dati.
+ 	
+ 	Ricordare che nel DAO non ha senso crearsi delle variabili locali, ma tutto quello che serve e' bene salvarlo e richiamarlo
+ 	comunque dal Model e poi passarlo eventualmente come parametro nel DAO se serve nuovamante.
  */
 
 public class FXMLController {
